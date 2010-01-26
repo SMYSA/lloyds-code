@@ -5,6 +5,19 @@ import os
 import socket
 import time
 
+# Stock Market Hours: 6:30am - 1:00pm PST
+# http://www.isthemarketopen.com/
+
+MARKET_OPEN_TIME = datetime.datetime.now().replace(hour = 6,
+                                                   minute = 30,
+                                                   second = 0,
+                                                   microsecond = 0)
+
+MARKET_CLOSE_TIME = datetime.datetime.now().replace(hour = 13,
+                                                    minute = 0,
+                                                    second = 0,
+                                                    microsecond = 0)
+
 # Dow Jones Industrial Average -> indu
 # Nasdaq Composite Index -> comp
 # S&P 500 Index -> spx
@@ -59,9 +72,14 @@ def QueryStockQuotes():
                       [datetime.datetime.now().strftime("%Y/%m/%d.%H:%M:%S")])
 
 
-while 1:
+while datetime.datetime.now() < MARKET_CLOSE_TIME:
   QueryStockQuotes()
-  time.sleep(5)
+  if datetime.datetime.now() < MARKET_OPEN_TIME:
+    sleep_period = (datetime.datetime.now() - MARKET_OPEN_TIME).seconds
+    print "Market is not open yet, sleeping for %d seconds" % seconds
+    time.sleep(sleep_period)
+  else:
+    time.sleep(5)
 
 
-
+print "Finished collecting stats"
