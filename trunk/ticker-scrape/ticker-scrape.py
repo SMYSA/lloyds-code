@@ -76,7 +76,7 @@ while datetime.datetime.now() < MARKET_CLOSE_TIME:
   QueryStockQuotes()
   if datetime.datetime.now() < MARKET_OPEN_TIME:
     sleep_period = (datetime.datetime.now() - MARKET_OPEN_TIME).seconds
-    print "Market is not open yet, sleeping for %d seconds" % seconds
+    print "Market is not open yet, sleeping for %d seconds" % sleep_period
     time.sleep(sleep_period)
   else:
     time.sleep(5)
