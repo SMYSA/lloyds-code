@@ -71,15 +71,13 @@ def QueryStockQuotes():
       writer.writerow(row +
                       [datetime.datetime.now().strftime("%Y/%m/%d.%H:%M:%S")])
 
+if datetime.datetime.now() < MARKET_OPEN_TIME:
+  sleep_period = (MARKET_OPEN_TIME - datetime.datetime.now()).seconds
+  print "Market is not open yet, sleeping for %d seconds" % sleep_period
+  time.sleep(sleep_period)
 
 while datetime.datetime.now() < MARKET_CLOSE_TIME:
   QueryStockQuotes()
-  if datetime.datetime.now() < MARKET_OPEN_TIME:
-    sleep_period = (MARKET_OPEN_TIME - datetime.datetime.now()).seconds
-    print "Market is not open yet, sleeping for %d seconds" % sleep_period
-    time.sleep(sleep_period)
-  else:
-    time.sleep(5)
-
+  time.sleep(5)
 
 print "Finished collecting stats"
